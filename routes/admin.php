@@ -22,6 +22,7 @@ Route::name('admin.')->group(function () {
     Route::resource('school', \App\Http\Controllers\SchoolController::class);
     Route::resource('degree', \App\Http\Controllers\DegreeController::class);
     Route::resource('study_area', \App\Http\Controllers\StudyAreaController::class);
+    Route::resource('skill', \App\Http\Controllers\SkillController::class);
 
     Route::controller(\App\Http\Controllers\SubCategoryController::class)->group(function () {
         Route::get('subcategory/{category}/index', 'index')->name('subcategory.index');

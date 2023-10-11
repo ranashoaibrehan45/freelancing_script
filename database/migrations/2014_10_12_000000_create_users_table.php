@@ -30,6 +30,7 @@ return new class extends Migration
             $table->biginteger('country_id')->nullable();
             $table->biginteger('timezone')->nullable();
             $table->enum('status', ['active','inactive','rejected','freezed']);
+            $table->date('dob')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

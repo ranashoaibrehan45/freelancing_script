@@ -18,8 +18,19 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function home(): View
     {
+        return view('auth.choose-role');
+    }
+
+    /**
+     * Display the registration view.
+     */
+    public function create(Request $request): View
+    {
+        if (!$request->get('as') || !in_array($request->get('as'), ['client', 'freelancer'])) {
+            return view('auth.choose-role');
+        }
         return view('auth.register');
     }
 
@@ -40,6 +51,7 @@ class RegisteredUserController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         event(new Registered($user));

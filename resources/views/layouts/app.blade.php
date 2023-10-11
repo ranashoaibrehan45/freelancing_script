@@ -67,7 +67,10 @@
 			<div class="page-main">
 
                 @include('partial.header')
-                @include('partial.topnav')
+
+				@if (Auth::user()->role == 'freelancer' && Auth::user()->freelancer->profile == 'completed')
+                	@include('partial.topnav')
+				@endif
 
 				<div class="hor-content main-content">
 					<div class="container">

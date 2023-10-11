@@ -30,6 +30,15 @@ Route::middleware(['auth','verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::controller(\App\Http\Controllers\FreelancerProfileController::class)->group(function() {
+        Route::get('/freelancer/profile/create/{page?}', 'create')->name('freelancer.profile.create');
+        Route::post('/freelancer/profile/started', 'started')->name('freelancer.profile.started');
+        Route::post('/freelancer/profile/experiencelevel', 'experienceLevel')->name('freelancer.profile.experiencelevel');
+        Route::post('/freelancer/profile/goal', 'goal')->name('freelancer.profile.goal');
+        Route::post('/freelancer/profile/how-to-work', 'howToWork')->name('freelancer.profile.htw');
+        Route::post('/freelancer/profile/title', 'title')->name('freelancer.profile.title');
+    });
+
     Route::controller(ProfileController::class)->group(function() {
         Route::get('/profile', 'show')->name('profile.show');
         Route::get('/profile', 'show')->name('profile.show');

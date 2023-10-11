@@ -71,6 +71,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $name;
     }
 
+    // get user photo
+    public function getPhoto()
+    {
+        if ($this->photo) {
+            return url('storage/avatars/128x128-'.Auth::user()->photo);
+        }
+        return url('assets/images/users/home-user.png');
+    }
+
     // get user country
     public function country() : belongsTo
     {
@@ -87,6 +96,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function city() : belongsTo
     {
         return $this->belongsTo(City::class);
+    }
+
+    /**
+     * Get the freelancerProfile associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function freelancer(): HasOne
+    {
+        return $this->hasOne(FreelancerProfile::class);
     }
 
     /**
@@ -107,5 +126,35 @@ class User extends Authenticatable implements MustVerifyEmail
     public function educations(): HasMany
     {
         return $this->hasMany(UserEducation::class);
+    }
+
+    /**
+     * check user freelancer status
+    */
+    public function freelancerStatus()
+    {
+        if (is_null($this->email_verified_at)) {
+            return route('verification.notice');
+        }
+        
+        $route = 'freelancer.profile.create';
+        switch ($this->freelancer->profile) {
+            case 'pending':
+                return route('freelancer.profile.create');
+                break;
+            
+            case 'start':
+                return route('freelancer.profile.create', ['page' => 'experience-level']);
+                break;
+
+            case 'experience_level':
+                return route('freelancer.profile.create', ['page' => 'set-goal']);
+                break;
+
+            case 'goal':
+                return route('freelancer.profile.create', ['page' => 'how-to-work']);
+                break;
+        }
+        return route('dashboard');
     }
 }

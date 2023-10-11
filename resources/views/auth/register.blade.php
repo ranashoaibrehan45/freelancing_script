@@ -31,6 +31,7 @@
                                 </div>
                                 <form method="POST" action="{{ route('register') }}" class="mt-5">
                                     @csrf
+                                    <input type="hidden" name="role" value="{{request()->get('as')}}" />
                                     <div class="input-group mb-4">
                                         <div class="input-group-text">
                                             <i class="fe fe-user"></i>

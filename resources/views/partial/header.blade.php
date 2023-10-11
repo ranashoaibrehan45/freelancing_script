@@ -140,7 +140,7 @@
                             <div class="dropdown profile-dropdown d-flex">
                                 <a href="javascript:void(0);" class="nav-link pe-0 leading-none" data-bs-toggle="dropdown">
                                     <span class="header-avatar1">
-                                        <img src="{{url('storage/avatars/128x128-'.$user->photo)}}" alt="img" class="avatar avatar-md brround">
+                                        <img src="{{Auth::user()->getPhoto()}}" alt="img" class="avatar avatar-md brround">
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow animated">

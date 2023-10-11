@@ -12,6 +12,7 @@
         <span class="side-menu__label">Utilities</span><i class="angle fe fe-chevron-right"></i></a>
         <ul class="slide-menu">
             <li><a href="{{route('admin.category.index')}}" class="slide-item"> Categories</a></li>
+            <li><a href="{{route('admin.skill.index')}}" class="slide-item"> Skills</a></li>
             <li><a href="{{route('admin.school.index')}}" class="slide-item"> School</a></li>
             <li><a href="{{route('admin.degree.index')}}" class="slide-item"> Degrees</a></li>
             <li><a href="{{route('admin.study_area.index')}}" class="slide-item"> Study Areas</a></li>
