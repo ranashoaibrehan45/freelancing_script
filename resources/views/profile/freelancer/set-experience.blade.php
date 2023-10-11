@@ -23,10 +23,12 @@
                     <h5>Freelancers who add their experience are twice as likely to win work. But if you're just starting out, you can still create a great profile. Just head to the next page.</h5>
                     <div class="row my-5">
                         <div class="col-md-4">
-                            <span class="selectgroup-button">
-                                <i class="fa fa-plus text-success"></i>
-                                <h3>Add Experience</h3>
-                            </span>
+                            <a data-bs-target="#modalAddExperience" data-bs-toggle="modal">
+                                <span class="selectgroup-button">
+                                    <i class="fa fa-plus text-success"></i>
+                                    <h3>Add Experience</h3>
+                                </span>
+                            <a>
                         </div>
                     </div>
                 </div>
@@ -38,4 +40,5 @@
         </form>
     </div>
 </div>
+@include('profile.experience.add-exp-modal')
 @endsection

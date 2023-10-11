@@ -22,7 +22,7 @@ class FreelancerProfileController extends Controller
     public function create($page = '')
     {
         if ($page) {
-            return view('profile.freelancer.'.$page);
+            return view('profile.freelancer.'.$page, ['user' => Auth::user()]);
         }
         return view('profile.freelancer.build-profile-1', ['user' => Auth::user()]);
     }

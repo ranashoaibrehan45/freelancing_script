@@ -154,6 +154,14 @@ class User extends Authenticatable implements MustVerifyEmail
             case 'goal':
                 return route('freelancer.profile.create', ['page' => 'how-to-work']);
                 break;
+
+            case 'how_to_work':
+                return route('freelancer.profile.create', ['page' => 'set-title']);
+                break;
+
+            case 'title':
+                return route('freelancer.profile.create', ['page' => 'set-experience']);
+                break;
         }
         return route('dashboard');
     }
