@@ -32,3 +32,42 @@ function getStateCities(stateId, cityId = 0)
         $("#city_id").html('<option>-- Select --</option>');
     }
 }
+
+
+// validation add experience form
+$("#exp_title,#exp_company").change(function() {
+    if ($.trim($(this).val()) == '') {
+        $(this).addClass('is-invalid');
+        $(this).focus();
+    } else {
+        $(this).removeClass('is-invalid');
+    }
+});
+
+$("#exp_continue").change(function() {
+    $("#exp_enddate_container").toggle();
+});
+
+$("#addExpForm").submit(function(e) {
+    // validate title
+    if ($.trim($("#exp_title").val()) == '') {
+        $("#exp_title").addClass('is-invalid')
+        $("#exp_title").focus();
+        return false;
+    }
+    // validate company
+    if ($.trim($("#exp_company").val()) == '') {
+        $("#exp_company").addClass('is-invalid')
+        $("#exp_company").focus();
+        return false;
+    }
+
+    if ($("#start_month").find(":selected").val() == $("#end_month").find(":selected").val() && $("#start_year").find(":selected").val() == $("#end_year").find(":selected").val()) {
+        notif({
+            msg: "<b>Oops:</b> Invalid start or end date",
+            type: "error"
+        });
+        return false;
+    }
+    return true;
+});

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('company');
             $table->string('location')->nullable();
-            $table->foreignId('country_id')->constrained();
+            $table->biginteger('country_id')->nullable();
             $table->tinyInteger('start_month');
             $table->smallInteger('start_year');
             $table->tinyInteger('end_month')->nullable();

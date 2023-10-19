@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FreelancerExperience;
+use App\Http\Requests\Profile\ExperienceRequest;
 use Illuminate\Http\Request;
 
 class FreelancerExperienceController extends Controller
@@ -26,9 +27,21 @@ class FreelancerExperienceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ExperienceRequest $request)
     {
-        //
+        try {
+            $data = $request->validated();
+            $data['user_id'] = $request->user()->id;
+            $exp = FreelancerExperience::create($data);
+            if ($exp) {
+                return back();
+            } else {
+                return back()->with('error', 'There is some problem, Please try again later.');
+            }
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            //return back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -50,7 +63,7 @@ class FreelancerExperienceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, FreelancerExperience $freelancerExperience)
+    public function update(ExperienceRequest $request, FreelancerExperience $freelancerExperience)
     {
         //
     }

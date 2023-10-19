@@ -52,6 +52,7 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::delete('profile/language/{id}', 'deleteLang')->name('profile.languages.delete');
     });
 
+    Route::resource('user_experience', \App\Http\Controllers\FreelancerExperienceController::class);
     Route::resource('user_education', \App\Http\Controllers\UserEducationController::class);
 });
 
