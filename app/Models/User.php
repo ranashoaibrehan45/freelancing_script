@@ -129,6 +129,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get all of the experiences for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(FreelancerExperience::class);
+    }
+
+    /**
      * check user freelancer status
     */
     public function freelancerStatus()

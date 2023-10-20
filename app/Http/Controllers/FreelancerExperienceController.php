@@ -13,7 +13,10 @@ class FreelancerExperienceController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'languages' => view('profile.experience.list')->render(),
+        ]);
     }
 
     /**

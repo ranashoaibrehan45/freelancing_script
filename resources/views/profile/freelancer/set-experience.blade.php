@@ -19,6 +19,9 @@
             <div class="card-body">
                 <h5>Freelancers who add their experience are twice as likely to win work. But if you're just starting out, you can still create a great profile. Just head to the next page.</h5>
                 @include('components.validation-errors')
+                <hr>
+                <div class="row my-5" id="exp_container"></div>
+                <hr>
                 <div class="row my-5">
                     <div class="col-md-4">
                         <a data-bs-target="#modalAddExperience" data-bs-toggle="modal">
@@ -45,4 +48,9 @@
     <script src="{{url('assets/plugins/sumoselect/jquery.sumoselect.js')}}"></script>
     <script src="{{url('assets/js/formelementadvnced.js')}}"></script>
     <script src="{{url('assets/js/form-elements.js')}}"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        loadExperiences();
+    });
+    </script>
 @endsection

@@ -3,6 +3,13 @@
 $loader = "<div class='text-center'><img src='".url('assets/images/svgs/loader.svg')."' /></div>";   
 @endphp
 <script type="text/javascript">
+    function loadExperiences() {
+        $("#exp_container").html("{!!$loader!!}");
+        $.get("{{route('user_experience.index')}}", function(data) {
+            $("#exp_container").html(data.languages);
+        });
+    }
+
     $(document).ready(function() {
         // load languages view
         $("#languages").html("{!!$loader!!}");

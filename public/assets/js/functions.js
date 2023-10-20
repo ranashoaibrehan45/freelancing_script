@@ -1,6 +1,11 @@
 // get app url defined in meta tag
 let url = document.getElementsByName('url')[0].getAttribute('content')
 
+/**
+ * Get states by country
+ * @param countryId
+ * @param stateId for selected state
+*/
 function getCountryStates(countryId, stateId = 0)
 {
     if (countryId > 0) {
@@ -17,6 +22,11 @@ function getCountryStates(countryId, stateId = 0)
     }
 }
 
+/**
+ * Get state cities
+ * @param stateId
+ * @param cityId for selected city
+*/
 function getStateCities(stateId, cityId = 0)
 {
     if (stateId > 0) {
@@ -32,7 +42,6 @@ function getStateCities(stateId, cityId = 0)
         $("#city_id").html('<option>-- Select --</option>');
     }
 }
-
 
 // validation add experience form
 $("#exp_title,#exp_company").change(function() {
