@@ -35,12 +35,13 @@
             </div>
             <div class="card-footer text-end">
                 <a href="{{route('freelancer.profile.create')}}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Next</button>
+                <a href="{{route('freelancer.profile.create', ['page' => 'set-education'])}}" class="btn btn-primary">Next, add your education</a>
             </div>
         </div>
     </div>
 </div>
 @include('profile.experience.add-exp-modal')
+@include('profile.experience.edit-exp-modal')
 @endsection
 
 @section('page-specific-js')

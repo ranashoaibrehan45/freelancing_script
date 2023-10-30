@@ -119,6 +119,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get user language proficiency
+     * @param $languageId
+     * @return proficiency Id
+     */
+    public function lanProficiency($languageId = 0)
+    {
+        return $this->languages()->where('language_id', $languageId)->first()->language_proficiency_id;
+    }
+
+    /**
      * Get all of the educations for the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -170,7 +180,16 @@ class User extends Authenticatable implements MustVerifyEmail
                 break;
 
             case 'title':
+            case 'experience':
                 return route('freelancer.profile.create', ['page' => 'set-experience']);
+                break;
+
+            case 'education':
+                return route('freelancer.profile.create', ['page' => 'set-education']);
+                break;
+
+            case 'languages':
+                return route('freelancer.profile.create', ['page' => 'set-language']);
                 break;
         }
         return route('dashboard');

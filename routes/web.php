@@ -48,6 +48,7 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/profile/languages', 'userLanguages')->name('profile.languages');
         Route::get('profile/add/language', 'addLanguage')->name('profile.languages.add');
         Route::post('/profile/store/language', 'storeLanguage')->name('profile.language.store');
+        Route::get('profile/add/lang_body', 'addLanguages')->name('profile.languages.addbody');
         Route::get('profile/edit/languages', 'editLanguages')->name('profile.languages.edit');
         Route::delete('profile/language/{id}', 'deleteLang')->name('profile.languages.delete');
     });

@@ -117,8 +117,18 @@ class ProfileController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = $request->user()->id;
-        $userLang = UserLanguage::create($data);
+        $user = $request->user();
 
+        $userLang = UserLanguage::updateOrCreate(
+            ['user_id' => $request->user()->id, 'language_id' => $request->language_id],
+            ['language_proficiency_id' => $request->language_proficiency_id]
+        );
+
+        if ($user->freelancer->profile == 'education') {
+            $user->freelancer->profile = 'languages';
+            $user->freelancer->save();
+        }
+        
         if (isset($userLang->id)) {
             return [
                 'success' => true,
@@ -130,6 +140,18 @@ class ProfileController extends Controller
         return response()->json([
             'success' => false,
             'error' => 'There is some problem, Please try again later!',
+        ]);
+    }
+
+    /**
+     * add language body
+     * @return languages view
+    */
+    public function addLanguages()
+    {
+        return response()->json([
+            'success' => true,
+            'languages' => view('profile.language.add-lang-body')->render(),
         ]);
     }
 
@@ -162,7 +184,9 @@ class ProfileController extends Controller
     */
     public function deleteLang($id)
     {
-        $userLang = UserLanguage::find($id);
+        $userLang = UserLanguage::where('language_id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
         if (!$userLang) {
             return response()->json([
                 'success' => false,

@@ -15,4 +15,8 @@
         </button>
     </div>
 </div>
+
+@if (!$loop->last)
+<hr>
+@endif
 @endforeach

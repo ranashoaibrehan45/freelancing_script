@@ -9,7 +9,18 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="editLangBody"></div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-5">
+                            <h3>Language</h3>
+                        </div>
+                        <div class="col-md-5">
+                            <h3>Proficiency Level</h3>
+                        </div>
+                        <div class="col-md-2">&nbsp;</div>
+                    </div>
+                    <div id="editLangBody"></div>
+                </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Save changes</button>
                     <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>

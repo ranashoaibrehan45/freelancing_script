@@ -4,14 +4,14 @@
         <h5 class="font-bold">{{$experience->title}}</h5>
     </div>
     <div class="col-md-4">
-        <button data-bs-target="#modalEditEdu" data-bs-toggle="modal" type="button" class="btn btn-icon btn-sm btn-success dtnEditEdu" data-id="{{$experience->id}}">
+        <button data-bs-target="#modalEditExp" data-bs-toggle="modal" type="button" class="btn btn-icon btn-sm btn-success dtnEditExp" data-id="{{$experience->id}}">
             <i class="fe fe-edit"></i>
         </button>
-        <button type="button" class="btn btn-icon btn-sm btn-danger ml-1 dtnDelEdu" data-id="{{$experience->id}}">
+        <button type="button" class="btn btn-icon btn-sm btn-danger ml-1 dtnDelExp" data-id="{{$experience->id}}">
             <i class="fe fe-trash"></i>
         </button>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12 my-3">
         <label class="font-semibold">
             {{$experience->company}} | 
             {{date("F", mktime(0, 0, 0, $experience->start_month, 1))}} {{$experience->start_year}} - 
@@ -32,8 +32,6 @@
         @if ($experience->description)
         <label class="font-semibold">{{Str::words($experience->description, 15)}}</label>
         @endif
-        
     </div>
-    
 </div>
 @endforeach

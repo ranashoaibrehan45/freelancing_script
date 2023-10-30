@@ -39,16 +39,24 @@ class UserEducationController extends Controller
 
             $userEdu = UserEducation::create($data);
             if ($userEdu) {
-                return redirect()->route('profile.edit');
+                $user = $request->user();
+                if ($user->freelancer->profile == 'experience') {
+                    $user->freelancer->profile = 'education';
+                    $user->freelancer->save();
+                }
+
+                return $this->index();
             }
 
-            return redirect()->route('profile.edit')
-                ->with('error', 'There is some problem, Please try again later.');
+            return response()->json([
+                'success' => true,
+                'view' => 'There is some problem, Please try again later.'
+            ]);
         } catch (\Exception $e) {
-            echo $e->getMessage();
-            die();
-            return redirect()->route('profile.edit')
-                ->with('error', $e->getMessage());
+            return response()->json([
+                'success' => true,
+                'view' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -78,7 +86,9 @@ class UserEducationController extends Controller
     {
         $data = $request->validated();
         $userEducation->update($data);
-        return redirect()->route('profile.edit');
+        if ($userEducation) {
+            return $this->index();
+        }
     }
 
     /**
