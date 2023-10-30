@@ -68,7 +68,7 @@
             </div>
             <div class="card-footer text-end">
                 <a href="{{route('freelancer.profile.create', ['page' => 'set-education'])}}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Next, add your skills</button>
+                <a href="{{route('freelancer.profile.create', ['page' => 'set-skills'])}}" class="btn btn-primary">Next, add your skills</a>
             </div>
         </div>
     </div>
