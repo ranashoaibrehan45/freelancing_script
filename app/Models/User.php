@@ -191,6 +191,10 @@ class User extends Authenticatable implements MustVerifyEmail
             case 'languages':
                 return route('freelancer.profile.create', ['page' => 'set-language']);
                 break;
+
+            case 'skills':
+                return route('freelancer.profile.create', ['page' => 'set-skills']);
+                break;
         }
         return route('dashboard');
     }

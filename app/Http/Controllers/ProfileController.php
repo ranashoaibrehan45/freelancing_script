@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\UserLanguage;
+use App\Models\FreelancerSkill;
 use Intervention\Image\Facades\Image as ResizeImage;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -206,5 +207,46 @@ class ProfileController extends Controller
             'success' => false,
             'error' => 'There is some problem, Please try again later.',
         ]);
+    }
+
+    /**
+     * Set freelancer's skills
+     * @param $skills
+    */
+    public function setSkills(Request $request)
+    {
+        $skills = $request->input('skills');
+        $user = $request->user();
+
+        try {
+            DB::beginTransaction();
+            FreelancerSkill::where('user_id', $user->id)->delete();
+            if (count($skills) > 0) {
+                foreach ($skills as $skill) {
+                    FreelancerSkill::create([
+                        'user_id' => $user->id,
+                        'skill_id' => $skill,
+                    ]);
+                }
+            }
+
+            if ($user->freelancer->profile == 'languages') {
+                $user->freelancer->profile = 'skills';
+                $user->freelancer->save();
+            }
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'skills' => FreelancerSkill::where('user_id', $user->id)->get(),
+                'status' => 'Skills updated successfully.',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

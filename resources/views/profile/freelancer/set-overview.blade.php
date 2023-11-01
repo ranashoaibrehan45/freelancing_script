@@ -9,7 +9,7 @@
 @section('content')
 <div class="page-header">
     <div class="page-leftheader">
-        <h1 class="page-title mb-0 text-primary">{{__('Nearly there! What work are you here to do.')}}</h1>
+        <h1 class="page-title mb-0 text-primary">{{__('Great. Now write a bio to tell the world about yourself.')}}</h1>
     </div>
 </div>
 
@@ -17,22 +17,14 @@
     <div class="col-xl-8 col-lg-8 col-md-8">
         <div class="card">
             <div class="card-body">
-                @php
-                $skills = \App\Models\FreelancerSkill::where('user_id', Auth::id())->pluck('skill_id')->toArray();
-                @endphp
-                <h5>{{__("Your skills show clients what you can offer, and help us choose which jobs to recommend to you. Add or remove the ones we've suggested, start typing to pick more. It's up to you.")}}</h5>
-                <a href="#" class="text-primary">{{__('Why choosing carefully matters')}}</a>
+                <h5>{{__("Help people get to know you at a glance. What work do you do best? Tell them clearly, using photographes or bullet points. You can always edit later; just make sure you proof read now.")}}</h5>
+                
                 <div class="form-group my-5">
-                    <label class="form-label">Users list</label>
-                    <select class="form-control select2" id="skills" data-placeholder="Enter skills here" multiple>
-                        @foreach(\App\Models\Skill::all() as $obj)
-                        <option value="{{$obj->id}}" @selected(in_array($obj->id, $skills))>{{$obj->name}}</option>
-                        @endforeach
-                    </select>
+                    <textarea name="" id="" rows="5" placeholder="{{__('Enter your top skills, experiences, and interests. This is one of the first things clients will see on your profile.')}}" class="form-control"></textarea>
                 </div>
             </div>
             <div class="card-footer text-end">
-                <a href="{{route('freelancer.profile.create', ['page' => 'set-skills'])}}" class="btn btn-secondary">Back</a>
+                <a href="{{route('freelancer.profile.create', ['page' => 'set-language'])}}" class="btn btn-secondary">Back</a>
                 <a href="{{route('freelancer.profile.create', ['page' => 'set-overview'])}}" class="btn btn-primary">Next, write an overview</a>
             </div>
         </div>

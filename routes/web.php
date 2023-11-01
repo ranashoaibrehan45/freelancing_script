@@ -51,6 +51,9 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('profile/add/lang_body', 'addLanguages')->name('profile.languages.addbody');
         Route::get('profile/edit/languages', 'editLanguages')->name('profile.languages.edit');
         Route::delete('profile/language/{id}', 'deleteLang')->name('profile.languages.delete');
+        // set skilsl
+        Route::get('/profile/skills', 'getSkills')->name('profile.skills');
+        Route::post('/profile/skills', 'setSkills')->name('profile.skills.store');
     });
 
     Route::resource('user_experience', \App\Http\Controllers\FreelancerExperienceController::class);
