@@ -73,7 +73,11 @@ class FreelancerProfileController extends Controller
     public function started(Request $request)
     {
         $user = $request->user();
-        $user->freelancer->profile = 'start';
+
+        if ($user->freelancer->profile = 'pending') {
+            $user->freelancer->profile = 'start';
+        }
+        
         $user->freelancer->save();
         return redirect()->route('freelancer.profile.create', ['page' => 'experience-level']);
     }
@@ -85,7 +89,11 @@ class FreelancerProfileController extends Controller
         ]);
 
         $user = $request->user();
-        $user->freelancer->profile = 'experience_level';
+
+        if ($user->freelancer->profile == 'start') {
+            $user->freelancer->profile = 'experience_level';
+        }
+
         $user->freelancer->experience_level = $request->experience_level;
         $user->freelancer->save();
 
@@ -102,7 +110,11 @@ class FreelancerProfileController extends Controller
         ]);
 
         $user = $request->user();
-        $user->freelancer->profile = 'goal';
+
+        if ($user->freelancer->profile == 'experience_level') {
+            $user->freelancer->profile = 'goal';
+        }
+
         $user->freelancer->goal = $request->goal;
         $user->freelancer->save();
 
@@ -121,8 +133,10 @@ class FreelancerProfileController extends Controller
 
         $user = $request->user();
         
-        $user->freelancer->profile = 'how_to_work';
-
+        if ($user->freelancer->profile == 'goal') {
+            $user->freelancer->profile = 'how_to_work';
+        }
+        
         if ($request->has('find_work')) {
             $user->freelancer->find_work = 1;
         }
@@ -145,10 +159,35 @@ class FreelancerProfileController extends Controller
         ]);
 
         $user = $request->user();
-        $user->freelancer->profile = 'title';
+
+        if ($user->freelancer->profile == 'how_to_work') {
+            $user->freelancer->profile = 'title';
+        }
+
         $user->freelancer->title = $request->title;
         $user->freelancer->save();
 
         return redirect()->route('freelancer.profile.create', ['page' => 'set-experience']);
+    }
+
+    /**
+     * save how freelancer profile overview
+    */
+    public function overview(Request $request)
+    {
+        $validated = $request->validate([
+            'bio' => 'required|min:100',
+        ]);
+
+        $user = $request->user();
+
+        if ($user->freelancer->profile == 'skills') {
+            $user->freelancer->profile = 'bio';
+        }
+
+        $user->freelancer->bio = $request->bio;
+        $user->freelancer->save();
+
+        return redirect()->route('freelancer.profile.create', ['page' => 'set-categories']);
     }
 }

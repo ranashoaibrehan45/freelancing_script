@@ -37,6 +37,7 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::post('/freelancer/profile/goal', 'goal')->name('freelancer.profile.goal');
         Route::post('/freelancer/profile/how-to-work', 'howToWork')->name('freelancer.profile.htw');
         Route::post('/freelancer/profile/title', 'title')->name('freelancer.profile.title');
+        Route::post('/freelancer/profile/overview', 'overview')->name('freelancer.profile.overview');
     });
 
     Route::controller(ProfileController::class)->group(function() {
