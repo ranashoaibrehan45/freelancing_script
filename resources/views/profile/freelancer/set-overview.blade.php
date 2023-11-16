@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Set Overview')
+@section('title', 'Bio')
 
 @section('page-specific-css')
 <link rel="stylesheet" href="{{url('assets/plugins/sumoselect/sumoselect.css')}}">
@@ -17,7 +17,7 @@
     <div class="col-md-12">
         @include('partial.validation-errors')
     </div>
-    <div class="col-xl-12 col-lg-12 col-md-12">
+    <div class="col-xl-8 col-lg-8 col-md-8">
         <form action="{{route('freelancer.profile.overview')}}" method="post">
             @csrf
             <div class="card">

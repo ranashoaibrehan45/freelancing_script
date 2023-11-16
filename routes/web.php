@@ -38,6 +38,8 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::post('/freelancer/profile/how-to-work', 'howToWork')->name('freelancer.profile.htw');
         Route::post('/freelancer/profile/title', 'title')->name('freelancer.profile.title');
         Route::post('/freelancer/profile/overview', 'overview')->name('freelancer.profile.overview');
+        Route::post('/profile/services', 'setServices')->name('profile.services.store');
+        Route::post('/profile/rate', 'setRate')->name('freelancer.profile.rate');
     });
 
     Route::controller(ProfileController::class)->group(function() {

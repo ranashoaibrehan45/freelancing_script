@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FreelancerProfile;
+use App\Models\FreelancerService;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -188,6 +189,72 @@ class FreelancerProfileController extends Controller
         $user->freelancer->bio = $request->bio;
         $user->freelancer->save();
 
-        return redirect()->route('freelancer.profile.create', ['page' => 'set-categories']);
+        return redirect()->route('freelancer.profile.create', ['page' => 'set-services']);
+    }
+
+    /**
+     * save how freelancer hourly rate
+    */
+    public function setRate(Request $request)
+    {
+        $validated = $request->validate([
+            'rate' => 'required|numeric|min:5',
+        ]);
+
+        $user = $request->user();
+
+        if ($user->freelancer->profile == 'services') {
+            $user->freelancer->profile = 'hourly_rate';
+        }
+
+        $user->freelancer->rate = $request->rate;
+        $user->freelancer->save();
+
+        return redirect()->route('freelancer.profile.create', ['page' => 'set-location']);
+    }
+
+    /**
+     * Set freelancer's services
+     * @param $services
+    */
+    public function setServices(Request $request)
+    {
+        $services = $request->input('services');
+        $user = $request->user();
+
+        try {
+            \DB::beginTransaction();
+            FreelancerService::where('user_id', $user->id)->delete();
+            if (count($services) > 0) {
+                foreach ($services as $service) {
+                    $subcat = \App\Models\SubCategory::find($service);
+                    if ($subcat) {
+                        FreelancerService::create([
+                            'user_id' => $user->id,
+                            'category_id' => $subcat->category_id,
+                            'sub_category_id' => $subcat->id,
+                        ]);
+                    }
+                }
+            }
+
+            if ($user->freelancer->profile == 'bio') {
+                $user->freelancer->profile = 'services';
+                $user->freelancer->save();
+            }
+
+            \DB::commit();
+            return response()->json([
+                'success' => true,
+                'services' => FreelancerService::where('user_id', $user->id)->get(),
+                'status' => 'Services updated successfully.',
+            ]);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }
