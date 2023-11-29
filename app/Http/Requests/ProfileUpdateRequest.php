@@ -20,7 +20,6 @@ class ProfileUpdateRequest extends FormRequest
             'first_name' => ['required', 'string', 'max:100'],
             'last_name' => ['required', 'string', 'max:100'],
             'phone' => ['required', 'string', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'role' => ['required'],
             'address' => ['required', 'string', 'max:255'],
             'city_id' => ['required'],
             'state_id' => ['required'],
@@ -28,7 +27,7 @@ class ProfileUpdateRequest extends FormRequest
             'country_id' => ['required'],
             'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
             'photo' => [
-                'required',
+                'nullable',
                 File::image()
                     ->max(1024)
                     //->max(12 * 1024)

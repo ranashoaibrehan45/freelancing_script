@@ -41,7 +41,8 @@ class FreelancerProfileController extends Controller
      */
     public function show(FreelancerProfile $freelancerProfile)
     {
-        //
+        $user = Auth::user();
+        return view('profile.freelancer.preview', compact('user'));
     }
 
     /**
@@ -168,6 +169,14 @@ class FreelancerProfileController extends Controller
         $user->freelancer->title = $request->title;
         $user->freelancer->save();
 
+        if ($request->ajax()) {
+            return [
+                'success' => true,
+                'title' => $user->freelancer->title,
+                'status' => 'Title updated successfully.',
+            ];
+        }
+
         return redirect()->route('freelancer.profile.create', ['page' => 'set-experience']);
     }
 
@@ -189,6 +198,14 @@ class FreelancerProfileController extends Controller
         $user->freelancer->bio = $request->bio;
         $user->freelancer->save();
 
+        if ($request->ajax()) {
+            return [
+                'success' => true,
+                'bio' => $user->freelancer->bio,
+                'status' => 'Overview updated successfully.',
+            ];
+        }
+
         return redirect()->route('freelancer.profile.create', ['page' => 'set-services']);
     }
 
@@ -209,6 +226,15 @@ class FreelancerProfileController extends Controller
 
         $user->freelancer->rate = $request->rate;
         $user->freelancer->save();
+        
+        // if the request is ajax
+        if ($request->ajax()) {
+            return [
+                'success' => true,
+                'rate' => $user->freelancer->getRate(),
+                'status' => 'Hourly rate updated successfully.',
+            ];
+        }
 
         return redirect()->route('freelancer.profile.create', ['page' => 'set-location']);
     }

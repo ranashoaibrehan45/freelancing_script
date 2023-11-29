@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <h5>{{__("Help people get to know you at a glance. What work do you do best? Tell them clearly, using photographes or bullet points. You can always edit later; just make sure you proofread now.")}}</h5>
                     <div class="form-group my-5">
-                        <textarea name="bio" id="bio" rows="5" placeholder="{{__('Enter your top skills, experiences, and interests. This is one of the first things clients will see on your profile.')}}" class="form-control">{{Auth::user()->freelancer->bio}}</textarea>
+                        <textarea id="profilebio" rows="5" placeholder="{{__('Enter your top skills, experiences, and interests. This is one of the first things clients will see on your profile.')}}" class="form-control">{{Auth::user()->freelancer->bio}}</textarea>
                     </div>
                 </div>
                 <div class="card-footer text-end">

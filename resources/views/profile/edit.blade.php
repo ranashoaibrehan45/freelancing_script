@@ -20,56 +20,26 @@
     </div>
     <div class="col-xl-3 col-lg-4">
         <div class="card box-widget widget-user">
-            <div class="widget-user-image mx-auto mt-5">
-                <img alt="User Avatar" class="rounded-circle" src="{{url('storage/avatars/128x128-'.$user->photo)}}">
+            <div id="profile_image">
+                <x-profile.image :photo="$user->photo" />
             </div>
-            <div class="card-body text-center pt-2">
-                <div class="pro-user">
-                    <h3 class="pro-user-username  mb-1 fs-22">{{$user->first_name}}</h3>
-                    <h6 class="pro-user-desc text-muted">Web Designer</h6>
-                    <div class="text-center mb-4">
-                        <span><i class="fa fa-star text-warning"></i></span>
-                        <span><i class="fa fa-star text-warning"></i></span>
-                        <span><i class="fa fa-star text-warning"></i></span>
-                        <span><i class="fa fa-star-half-o text-warning"></i></span>
-                        <span><i class="fa fa-star-o text-warning"></i></span>
+            <hr>
+            <div class="card-body">
+                <form id="profileImageUploadForm" action="{{url("profile/image")}}" enctype="multipart/form-data" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <label class="form-label" for="profile_photo">Profile Picture</label>
+                        <x-text-input type="file" name="profile_photo" id="profile_photo" />
                     </div>
-                    <a href="{{route('profile.show')}}" class="btn btn-primary mt-3">{{__('View Profile')}}</a>
-                </div>
-            </div>
-            <div class="card-footer p-0">
-                <div class="row">
-                    <div class="col-sm-6 border-end text-center">
-                        <div class="description-block p-4">
-                            <h5 class="description-header mb-1 font-weight-bold  number-font">689k</h5>
-                            <span class="text-muted">{{__('Followers')}}</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="description-block text-center p-4">
-                            <h5 class="description-header mb-1 font-weight-bold  number-font">3,765</h5>
-                            <span class="text-muted">{{__('Following')}}</span>
-                        </div>
-                    </div>
-                </div>
+                </form>
+                <p>
+                    Must be an actual photo of you.
+                    Logos, clip-art, group photos, and digitally-altered images are not allowed. 
+                    Opens in new window:  <a href="">Learn more</a>
+                </p>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header ">
-                <div class="card-title">
-                    <div class="card-title">{{__('Languages')}}</div>
-                </div>
-                <div class="card-options">
-                    <button data-bs-target="#modalAddLanguage" data-bs-toggle="modal" type="button" class="btn btn-icon btn-primary">
-                        <i class="fe fe-plus"></i>
-                    </button>
-                    <button data-bs-target="#modalEditLanguages" data-bs-toggle="modal" type="button" class="btn btn-icon btn-primary ms-1" id="editLangs">
-                        <i class="fe fe-edit"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body" id="languages"></div>
-        </div>
+        @include('profile.components.languages')
         <div class="card">
             <div class="card-header ">
                 <div class="card-title">
@@ -173,22 +143,6 @@
                                 <select name="city_id" id="city_id" class="form-control select2"></select>
                             </div>
                         </div>
-                        
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group ">
-                                <div class="form-label">Join As</div>
-                                <div class="custom-controls-stacked">
-                                    <label class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" name="role" value="client" @checked($user->role == 'client')>
-                                        <span class="custom-control-label">Client</span>
-                                    </label>
-                                    <label class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" name="role" value="freelancer" @checked($user->role == 'freelancer')>
-                                        <span class="custom-control-label">Freelancer</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="card-footer text-end">
@@ -216,6 +170,9 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            // load educations
+            loadEducations();
+
             @if(old('country_id'))
             let countryId = parseInt("{{old('country_id')}}");
             let stateId = parseInt("{{old('state_id')}}");

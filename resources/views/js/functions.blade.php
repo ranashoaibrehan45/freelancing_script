@@ -23,7 +23,169 @@ $loader = "<div class='text-center'><img src='".url('assets/images/svgs/loader.s
         });
     }
 
+    /**
+     * Calculate hourly rate
+    */
+    $("#profilerate").change(function() {
+        let rate = $(this).val();
+        calculateRate(rate);
+    });
+    
+   function calculateRate(rate) {
+    if (rate > 4) {
+        let fee = (rate / 100) * 10
+        $('#servicefee').val(fee);
+        $('#youget').val(rate - fee);
+    } else {
+        notif({
+            msg: "<b>Oops! your rate must be greater than or equals to $5</b> ",
+            type: "error",
+        });
+    }
+   }
+
     $(document).ready(function() {
+        $('#profileImageUploadForm').on('submit',(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type:'POST',
+                url: '{{url("profile/image")}}',
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(data){
+                    $("#profile_image").html(data.view);
+                    $('#profileImageUploadForm')[0].reset();
+                },
+                error: function(data){
+                    let error = JSON.parse(data.responseText);
+                    notif({
+                        msg: "<b>Error:</b> " + error.message,
+                        type: "error"
+                    });
+                }
+            });
+        }));
+
+        /**
+         * Profile title update
+        */
+        $("#profileTitleForm").submit(function(e) {
+            e.preventDefault();
+            $.post("{{route('freelancer.profile.title')}}", {
+                _token: "{{csrf_token()}}",
+                title: $("#profiletitle").val()
+            })
+            .done(function(data) {
+                if (data.success) {
+                    notif({
+                        msg: "<b>Success:</b> " + data.status,
+                        type: "success"
+                    });
+                    $("#profileTitle").html(data.title);
+                    $("#modalProfileTitle").modal("hide");
+                }
+            })
+            .fail(function(error) {
+                error = JSON.parse(error.responseText);
+                notif({
+                    msg: "<b>Oops!</b> " + error.message,
+                    type: "error",
+                });
+            });;
+        });
+
+        /**
+         * Profile overview updated
+        */
+        $("#profileBioForm").submit(function(e) {
+            e.preventDefault();
+            $.post("{{route('freelancer.profile.overview')}}", {
+                _token: "{{csrf_token()}}",
+                bio: $("#profileBioText").val()
+            })
+            .done(function(data) {
+                if (data.success) {
+                    notif({
+                        msg: "<b>Success:</b> " + data.status,
+                        type: "success"
+                    });
+                    $("#profileBio").html(data.bio);
+                    $("#modalProfileBio").modal("hide");
+                }
+            })
+            .fail(function(error) {
+                error = JSON.parse(error.responseText);
+                notif({
+                    msg: "<b>Oops!</b> " + error.message,
+                    type: "error",
+                });
+            });
+        });
+
+        /**
+         * Profile rate updated
+        */
+        $("#profileRateForm").submit(function(e) {
+            e.preventDefault();
+
+            $.post("{{route('freelancer.profile.rate')}}", {
+                _token: "{{csrf_token()}}",
+                rate: $("#profilerate").val()
+            })
+            .done(function(data) {
+                if (data.success) {
+                    notif({
+                        msg: "<b>Success:</b> " + data.status,
+                        type: "success"
+                    });
+                    $("#profileRate").html(data.rate);
+                    $("#modalProfileRate").modal("hide");
+                }
+            })
+            .fail(function(error) {
+                error = JSON.parse(error.responseText);
+                notif({
+                    msg: "<b>Oops!</b> " + error.message,
+                    type: "error",
+                });
+            });
+        });
+
+        /**
+         * set profile skills
+        */
+        $("#profileskills").change(function(e) {
+            e.preventDefault();
+            let skills = $(this).val();
+            $.post("{{route('profile.skills.store')}}", {
+                _token: "{{csrf_token()}}",
+                skills: skills
+            })
+            .done(function(data) {
+                if (data.success) {
+                    notif({
+                        msg: "<b>Success:</b> " + data.status,
+                        type: "success"
+                    });
+                    $("#profileSkills").html(data.skills);
+                }
+            })
+            .fail(function(error) {
+                error = JSON.parse(error.responseText);
+                notif({
+                    msg: "<b>Oops!</b> " + error.message,
+                    type: "error",
+                });
+            });
+        });
+
+        $('#profile_photo').change(function() {
+            $("#profileImageUploadForm").submit();
+        })
+        
         // load languages view
         $("#languages").html("{!!$loader!!}");
         $.get("{{route('profile.languages')}}", function(data) {

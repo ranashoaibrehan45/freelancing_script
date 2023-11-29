@@ -24,7 +24,7 @@
                 <a href="#" class="text-primary">{{__('Why choosing carefully matters')}}</a>
                 <div class="form-group my-5">
                     <label class="form-label">Users list</label>
-                    <select class="form-control select2" id="skills" data-placeholder="Enter skills here" multiple>
+                    <select class="form-control select2" id="profileskills" data-placeholder="Enter skills here" multiple>
                         @foreach(\App\Models\Skill::all() as $obj)
                         <option value="{{$obj->id}}" @selected(in_array($obj->id, $skills))>{{$obj->name}}</option>
                         @endforeach
@@ -58,29 +58,4 @@
     <script src="{{url('assets/plugins/sumoselect/jquery.sumoselect.js')}}"></script>
     <script src="{{url('assets/js/formelementadvnced.js')}}"></script>
     <script src="{{url('assets/js/form-elements.js')}}"></script>
-    <script>
-        $(document).ready(function(e) {
-            $("#skills").change(function(e) {
-                e.preventDefault();
-                let skills = $(this).val();
-                console.log(skills);
-                $.post("{{route('profile.skills.store')}}", {
-                    _token: "{{csrf_token()}}",
-                    skills: skills
-                }, function (data) {
-                    if (data.success) {
-                        notif({
-                            msg: "<b>Success:</b> " + data.status,
-                            type: "success"
-                        });
-                    } else {
-                        notif({
-                            msg: "<b>Oops!</b> " + data.error,
-                            type: "error",
-                        });
-                    }
-                });
-            });
-        })
-    </script>
 @endsection

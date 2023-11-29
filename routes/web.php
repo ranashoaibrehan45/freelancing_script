@@ -31,6 +31,7 @@ Route::middleware(['auth','verified'])->group(function () {
     })->name('dashboard');
 
     Route::controller(\App\Http\Controllers\FreelancerProfileController::class)->group(function() {
+        Route::get('/freelancer/profile/preview', 'show')->name('freelancer.profile.preview');
         Route::get('/freelancer/profile/create/{page?}', 'create')->name('freelancer.profile.create');
         Route::post('/freelancer/profile/started', 'started')->name('freelancer.profile.started');
         Route::post('/freelancer/profile/experiencelevel', 'experienceLevel')->name('freelancer.profile.experiencelevel');
@@ -57,6 +58,7 @@ Route::middleware(['auth','verified'])->group(function () {
         // set skilsl
         Route::get('/profile/skills', 'getSkills')->name('profile.skills');
         Route::post('/profile/skills', 'setSkills')->name('profile.skills.store');
+        Route::post('/profile/image', 'image')->name('profile.image.store');
     });
 
     Route::resource('user_experience', \App\Http\Controllers\FreelancerExperienceController::class);

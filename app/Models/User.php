@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\hasOne;
 use Illuminate\Database\Eloquent\Relations\belongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -146,6 +147,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function experiences(): HasMany
     {
         return $this->hasMany(FreelancerExperience::class);
+    }
+
+    /**
+     * Get all of the skills for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function skills(): HasMany
+    {
+        return $this->hasMany(FreelancerSkill::class);
     }
 
     /**

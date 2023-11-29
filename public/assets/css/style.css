@@ -38243,5 +38243,14 @@ video {
     margin-top: 0.3rem;
 }
 
+.text-justify {
+    text-align: justify;
+}
+.modal-backdrop {
+    z-index: 99 !important;
+}
+.modal-open .modal{
+    z-index: 111 !important;
+}
 /*---End profile---*/
 /*# sourceMappingURL=style.css.map */

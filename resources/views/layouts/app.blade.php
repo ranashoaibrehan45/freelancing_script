@@ -117,6 +117,7 @@
 		<script src="{{url('assets/plugins/notify/js/jquery.growl.js')}}"></script>
 		<script src="{{url('assets/plugins/notify/js/notifIt.js')}}"></script>
 		
+		{{--
 		<!--INTERNAL Flot Charts js-->
 		<script src="{{url('assets/plugins/flot/jquery.flot.js')}}"></script>
 		<script src="{{url('assets/plugins/flot/jquery.flot.fillbetween.js')}}"></script>
@@ -138,11 +139,12 @@
 		<script src="{{url('assets/js/index1.js')}}"></script>
 
 		<!-- INTERNAL Data tables -->
+		
 		<script src="{{url('assets/plugins/datatables/DataTables/js/jquery.dataTables.js')}}"></script>
 		<script src="{{url('assets/plugins/datatables/DataTables/js/dataTables.bootstrap5.js')}}"></script>
 		<script src="{{url('assets/plugins/datatables/Responsive/js/dataTables.responsive.min.js')}}"></script>
 		<script src="{{url('assets/plugins/datatables/Responsive/js/responsive.bootstrap5.min.js')}}"></script>
-
+		--}}
 		<!-- INTERNAL Select2 js -->
 		<script src="{{url('assets/plugins/select2/select2.full.min.js')}}"></script>
 		<script src="{{url('assets/js/select2.js')}}"></script>

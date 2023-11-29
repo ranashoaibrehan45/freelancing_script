@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\Profile\ImageRequest;
 use App\Models\UserLanguage;
 use App\Models\FreelancerSkill;
 use Intervention\Image\Facades\Image as ResizeImage;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -73,6 +75,12 @@ class ProfileController extends Controller
                     Storage::delete('public/avatars/'.$oldPhoto);
                     Storage::delete('public/avatars/128x128-'.$oldPhoto);
                 }
+            }
+
+            // update profile status
+            if ($user->freelancer->profile == 'hourly_rate') {
+                $user->freelancer->profile = 'details';
+                $user->freelancer->save();
             }
 
             DB::commit();
@@ -185,9 +193,7 @@ class ProfileController extends Controller
     */
     public function deleteLang($id)
     {
-        $userLang = UserLanguage::where('language_id', $id)
-            ->where('user_id', Auth::id())
-            ->first();
+        $userLang = UserLanguage::find($id);
         if (!$userLang) {
             return response()->json([
                 'success' => false,
@@ -236,9 +242,14 @@ class ProfileController extends Controller
             }
 
             DB::commit();
+
+            $skills = '';
+            foreach (FreelancerSkill::where('user_id', $user->id)->get() as $skill) {
+                $skills .= '<span class="tag">'.$skill->skill->name.'</span>';
+            }
             return response()->json([
                 'success' => true,
-                'skills' => FreelancerSkill::where('user_id', $user->id)->get(),
+                'skills' => $skills,
                 'status' => 'Skills updated successfully.',
             ]);
         } catch (\Exception $e) {
@@ -247,6 +258,45 @@ class ProfileController extends Controller
                 'success' => false,
                 'error' => $e->getMessage(),
             ]);
+        }
+    }
+
+    /**
+     * Update the user's profile image.
+     */
+    public function image(ImageRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $user = $request->user();
+
+            if ($request->file('profile_photo')) {
+                $oldPhoto = $user->photo;
+                $path = $request->file('profile_photo')->store('public/avatars');
+                $user->photo = last(Str::of($path)->explode('/')->toArray());
+                $user->save();
+
+                // resize image
+                $name = '128x128-'.$user->photo;
+                ResizeImage::make($request->file('profile_photo'))
+                    ->resize(128, 128)
+                    ->save(storage_path('app/public/avatars/'.$name));
+
+                if ($oldPhoto) {
+                    Storage::delete('public/avatars/'.$oldPhoto);
+                    Storage::delete('public/avatars/128x128-'.$oldPhoto);
+                }
+            }
+            DB::commit();
+            return [
+                'success' => true,
+                'view' => view('components.profile.image', [
+                    'photo' => url('storage/avatars/128x128-'.$user->photo),
+                ])->render(),
+            ];
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Something went wrong, Please try again later.');
         }
     }
 }

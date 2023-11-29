@@ -13,9 +13,7 @@
 <div class="row">
     <div class="col-xl-4 col-lg-4 col-md-12">
         <div class="card box-widget widget-user">
-            <div class="widget-user-image mx-auto mt-5">
-                <img alt="User Avatar" class="rounded-circle" src="{{url('storage/avatars/128x128-'.$user->photo)}}">
-            </div>
+            <x-profile.image :photo="$user->photo" />
             <div class="card-body text-center">
                 <div class="pro-user">
                     <h4 class="pro-user-username mb-1 font-weight-bold">{{$user->first_name}}</h4>

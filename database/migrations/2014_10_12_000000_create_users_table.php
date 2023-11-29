@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('role', ['client','freelancer','manager','admin'])->default('client');
             $table->string('photo')->nullable();
             $table->string('address')->nullable();
+            $table->string('apt')->nullable();
             $table->biginteger('city_id')->nullable();
             $table->biginteger('state_id')->nullable();
             $table->string('zipcode')->nullable();

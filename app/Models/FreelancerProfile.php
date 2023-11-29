@@ -28,4 +28,9 @@ class FreelancerProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getRate()
+    {
+        return number_format($this->rate, 2);
+    }
 }

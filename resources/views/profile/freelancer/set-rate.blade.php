@@ -29,7 +29,7 @@
                     <div class="col-md-4">
                         <div class="input-group has-validation">
                             <span class="input-group-text">{{__('$')}}</span>
-                            <input type="number" name="rate" id="rate" class="form-control" required="">
+                            <input type="number" name="rate" id="profilerate" value="{{Auth::user()->freelancer->rate}}" class="form-control" required="">
                             <span class="input-group-text">{{__('/ hr')}}</span>
                           </div>
                     </div>
@@ -80,19 +80,8 @@
     <script src="{{url('assets/js/form-elements.js')}}"></script>
     <script>
         $(document).ready(function(e) {
-            $("#rate").change(function() {
-                let rate = $(this).val();
-                if (rate > 4) {
-                    let fee = (rate / 100) * 10
-                    $('#servicefee').val(fee);
-                    $('#youget').val(rate - fee);
-                } else {
-                    notif({
-                        msg: "<b>Oops! your rate must be greater than or equals to $5</b> ",
-                        type: "error",
-                    });
-                }
-            });
+            let rate = "{{Auth::user()->freelancer->rate}}";
+            calculateRate(rate);
         })
     </script>
 @endsection
