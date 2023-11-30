@@ -38251,6 +38251,7 @@ video {
 }
 .modal-open .modal{
     z-index: 111 !important;
+    top: 35px !important;
 }
 /*---End profile---*/
 /*# sourceMappingURL=style.css.map */

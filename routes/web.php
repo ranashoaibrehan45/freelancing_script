@@ -41,10 +41,11 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::post('/freelancer/profile/overview', 'overview')->name('freelancer.profile.overview');
         Route::post('/profile/services', 'setServices')->name('profile.services.store');
         Route::post('/profile/rate', 'setRate')->name('freelancer.profile.rate');
+        Route::post('/profile/submit', 'submit')->name('freelancer.profile.submit');
+        Route::get('/profile/completed', 'completed')->name('freelancer.profile.completed');
     });
 
     Route::controller(ProfileController::class)->group(function() {
-        Route::get('/profile', 'show')->name('profile.show');
         Route::get('/profile', 'show')->name('profile.show');
         Route::get('/edit/profile', 'edit')->name('profile.edit');
         Route::patch('/profile', 'update')->name('profile.update');

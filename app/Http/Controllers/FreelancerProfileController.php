@@ -283,4 +283,27 @@ class FreelancerProfileController extends Controller
             ]);
         }
     }
+
+    /**
+     * Submit freelancer profile
+    */
+    public function submit(Request $request)
+    {
+        $user = $request->user();
+        if ($user->freelancer->profile == 'details') {
+            $user->freelancer->profile = 'completed';
+            $user->freelancer->save();
+        }
+
+        return redirect()->route('freelancer.profile.completed');
+    }
+
+    /**
+     * Freelancer profile gets completed
+    */
+    public function completed()
+    {
+        $user = Auth::user();
+        return view('profile.freelancer.completed', compact('user'));
+    }
 }

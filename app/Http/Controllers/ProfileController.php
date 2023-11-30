@@ -49,16 +49,19 @@ class ProfileController extends Controller
         try {
             DB::beginTransaction();
 
-            $request->user()->fill($request->validated());
-
-            if ($request->user()->isDirty('email')) {
-                $request->user()->email_verified_at = null;
-            }
-
-
-            $request->user()->save();
             $user = $request->user();
 
+            $data = $request->all();
+            $data['dob'] = \Carbon\Carbon::createFromFormat('d-m-Y', $request->input('dob'))->format('Y-m-d');
+            
+            $user->fill($data);
+
+            if ($user->isDirty('email')) {
+                $user->email_verified_at = null;
+            }
+
+            $user->save();
+            
             if ($request->file('photo')) {
                 $oldPhoto = $user->photo;
                 $path = $request->file('photo')->store('public/avatars');
@@ -78,16 +81,19 @@ class ProfileController extends Controller
             }
 
             // update profile status
+            $redirectRoute = 'profile.edit';
+            
             if ($user->freelancer->profile == 'hourly_rate') {
                 $user->freelancer->profile = 'details';
                 $user->freelancer->save();
+                $redirectRoute = 'freelancer.profile.preview';
             }
 
             DB::commit();
-            return Redirect::route('profile.edit')->with('status', 'profile-updated');
+            return Redirect::route($redirectRoute)->with('status', 'profile-updated');
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->with('error', 'Something went wrong, Please try again later.');
+            return back()->with('error', $this->getErrorMessage($e));
         }
     }
 

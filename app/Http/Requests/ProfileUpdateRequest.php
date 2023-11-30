@@ -19,8 +19,10 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:100'],
             'last_name' => ['required', 'string', 'max:100'],
+            'dob' => ['nullable', 'date'],
             'phone' => ['required', 'string', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
             'address' => ['required', 'string', 'max:255'],
+            'apt' => ['nullable', 'string', 'max:255'],
             'city_id' => ['required'],
             'state_id' => ['required'],
             'zipcode' => ['required', 'string', 'max:10'],

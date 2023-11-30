@@ -27,8 +27,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'username',
         'email',
         'phone',
+        'dob',
         'role',
         'address',
+        'apt',
         'city_id',
         'state_id',
         'zipcode',
@@ -55,6 +57,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getDob()
+    {
+        return \Carbon\Carbon::createFromFormat('Y-m-d', $this->dob)->format('d-m-Y');
+    }
 
     // verify user role
     public function hasRole($role)

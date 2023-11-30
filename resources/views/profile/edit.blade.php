@@ -38,20 +38,11 @@
                     Opens in new window:  <a href="">Learn more</a>
                 </p>
             </div>
-        </div>
-        @include('profile.components.languages')
-        <div class="card">
-            <div class="card-header ">
-                <div class="card-title">
-                    <div class="card-title">{{__('Education')}}</div>
-                </div>
-                <div class="card-options">
-                    <button data-bs-target="#modalAddEdu" data-bs-toggle="modal" type="button" class="btn btn-icon btn-primary">
-                        <i class="fe fe-plus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body" id="educations"></div>
+
+            @if (Auth::user()->role == 'freelancer')
+                @include('profile.components.languages')
+                @include('profile.components.education')
+            @endif
         </div>
     </div>
     <div class="col-xl-9 col-lg-8">
@@ -91,20 +82,6 @@
                                 <label class="form-label">Phone Number</label>
                                 <x-text-input type="tel" name="phone" :value="old('phone') ?? $user->phone" id="mobile-number" placeholder="e.g. +1 702 123 4567" />
 							</div>
-                        </div>
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                <label class="form-label" for="photo">Profile Picture</label>
-                                <x-text-input type="file" name="photo" id="photo" @class(['is-invalid' => $errors->has('photo')]) />
-                                <x-input-error :messages="$errors->get('photo')" class="mt-2 invalid-feedback" />
-							</div>
-                        </div>
-                        <div class="col-md-12">
-                            <p>
-                                Must be an actual photo of you.
-                                Logos, clip-art, group photos, and digitally-altered images are not allowed. 
-                                Opens in new window:  <a href="">Learn more</a>
-                            </p>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
@@ -151,13 +128,21 @@
                 </div>
             </div>
         </form>
+
+        @if (Auth::user()->role == 'freelancer')
+        <div class="card">
+            <div class="card-body">
+                @include('profile.freelancer.edit')
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 
-    @include('profile.language.add-language')
-    @include('profile.language.edit-languages')
+    @if (Auth::user()->role == 'freelancer')
     @include('profile.education.add-edu-modal')
     @include('profile.education.edit-edu-modal')
+    @endif
 @endsection
 
 @section('page-specific-js')
@@ -170,8 +155,12 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            @if (Auth::user()->role == 'freelancer')
             // load educations
             loadEducations();
+            // Load experience
+            loadExperiences();
+            @endif
 
             @if(old('country_id'))
             let countryId = parseInt("{{old('country_id')}}");

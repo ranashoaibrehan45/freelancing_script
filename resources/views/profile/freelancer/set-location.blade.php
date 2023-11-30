@@ -49,6 +49,9 @@
 
             <div class="col-xl-9 col-lg-8">
                 @include('partial.validation-errors')
+                <x-auth-session-status class="mb-4 alert alert-success" :status="session('status')" />
+                <x-auth-session-status class="mb-4 alert alert-danger" :status="session('error')" />
+
                 <form method="post" action="{{route('profile.update')}}" enctype="multipart/form-data">
                     @csrf
                     @method('patch')
@@ -65,7 +68,7 @@
                                             <span class="fe fe-clock"></span>
                                         </div>
                                     </div>
-                                    <x-text-input type="text" name="dob" id="datepicker-dob" value="{{old('dob') ?? $user->dob}}" required autocomplete="dob" @class(['is-invalid' => $errors->has('dob')]) placeholder="Date of birth" />
+                                    <x-text-input type="text" name="dob" id="datepicker-dob" value="{{old('dob') ?? $user->getDob()}}" required autocomplete="dob" @class(['is-invalid' => $errors->has('dob')]) placeholder="Date of birth" />
                                     <x-input-error :messages="$errors->get('dob')" class="mt-2 invalid-feedback" />
                                 </div>
                             </div>
