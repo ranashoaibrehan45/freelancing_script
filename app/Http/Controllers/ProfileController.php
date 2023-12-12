@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Twilio\Rest\Client;
 use DB;
 
 class ProfileController extends Controller
@@ -305,4 +306,92 @@ class ProfileController extends Controller
             return back()->with('error', 'Something went wrong, Please try again later.');
         }
     }
+
+    /**
+     * Verify mobile number
+    */
+    public function mobile(Request $request)
+    {
+        $user = $request->user();
+
+        $data = $request->validate([
+            'phone' => ['required', 'numeric', 'unique:users,phone,'. $user->id],
+        ]);
+
+        if ($user->isDirty('phone')) {
+            $user->phone_verified_at = null;
+        }
+
+        /* Get credentials from .env */
+        $api_key = getenv("VONAGE_API_KEY");
+        $api_secret = getenv("VONAGE_API_SECRET");
+        
+        $basic  = new \Vonage\Client\Credentials\Basic($api_key, $api_secret);
+        $client = new \Vonage\Client(new \Vonage\Client\Credentials\Container($basic));
+
+        try {
+            $request = new \Vonage\Verify\Request($data['phone'], "Vonage");
+            $response = $client->verify()->start($request);
+
+            \App\Models\NexmoVerifyRequest::updateOrCreate(
+                ['user_id' => Auth::id()],
+                ['request_id' => $response->getRequestId()]
+            );
+        } catch (\Exception $e) {
+            \Log::info($e->getMessage());
+            return back()->with('error', $this->getErrorMessage($e));
+        }
+
+        $user->phone = $data['phone'];
+        $user->save();
+        
+        return redirect()->route('profile.verify.phone')->with(['phone' => $data['phone']]);
+    }
+
+    /**
+     * Verify phone
+    */
+    public function createVarification()
+    {
+        return view('profile.verify-phone');
+    }
+
+    /**
+     * Verify phone number
+    */
+    protected function verifyPhone(Request $request)
+    {
+        $data = $request->validate([
+            'verification_code' => ['required', 'numeric'],
+            'phone' => ['required', 'string'],
+        ]);
+
+        $user = $request->user();
+        
+        /* Get credentials from .env */
+        $api_key = getenv("VONAGE_API_KEY");
+        $api_secret = getenv("VONAGE_API_SECRET");
+
+        $basic  = new \Vonage\Client\Credentials\Basic($api_key, $api_secret);
+        $client = new \Vonage\Client(new \Vonage\Client\Credentials\Container($basic));
+        
+        try {
+            $result = $client->verify()->check($user->nexmo->request_id, $request->verification_code);
+            $responseData = $result->getResponseData();
+            \Log::info(print_r($responseData, true));
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        if (true) {
+            $user->phone_verified_at = \Carbon\Carbon::toDateTimeString();
+            $user->save();
+
+            /* Authenticate user */
+            return redirect()->route('home')->with(['message' => 'Phone number verified']);
+        }
+
+        return back()->with(['phone_number' => $data['phone_number'], 'error' => 'Invalid verification code entered!']);
+    }
+
 }

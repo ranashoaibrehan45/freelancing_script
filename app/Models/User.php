@@ -117,6 +117,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the nexmo request with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function nexmo(): HasOne
+    {
+        return $this->hasOne(NexmoVerifyRequest::class);
+    }
+
+    /**
      * Get all of the languages for the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

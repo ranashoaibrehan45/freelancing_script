@@ -30,6 +30,10 @@ Route::middleware(['auth','verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::controller(\App\Http\Controllers\ClientProfileController::class)->group(function() {
+        Route::get('/client/profile/{page?}', 'create')->name('client.profile.create');
+    });
+
     Route::controller(\App\Http\Controllers\FreelancerProfileController::class)->group(function() {
         Route::get('/freelancer/profile/preview', 'show')->name('freelancer.profile.preview');
         Route::get('/freelancer/profile/create/{page?}', 'create')->name('freelancer.profile.create');
@@ -60,6 +64,11 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/profile/skills', 'getSkills')->name('profile.skills');
         Route::post('/profile/skills', 'setSkills')->name('profile.skills.store');
         Route::post('/profile/image', 'image')->name('profile.image.store');
+        
+        // verify phone number
+        Route::post('/profile/phone_number', 'mobile')->name('profile.phone');
+        Route::get('/profile/verify/phone_number', 'createVarification')->name('profile.verify.phone');
+        Route::post('/profile/verify/phone_number', 'verifyPhone')->name('profile.verify.phone');
     });
 
     Route::resource('user_experience', \App\Http\Controllers\FreelancerExperienceController::class);
